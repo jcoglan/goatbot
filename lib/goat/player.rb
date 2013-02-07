@@ -11,19 +11,9 @@ class Player
 
   def pick
     possible_words = []
-    brain.each do |word, sorted_word|
-      used_letters = letters.dup
-      found = 0
-      word.split('').each do |l|
-        if used_letters.include?(l)
-          found += 1
-          used_letters.delete(l)
-        end
-      end
-      if found == word.size
-        possible_words << word
-        break if word.size > 4
-      end
+    5.times do |num|
+      possible_words = possible(5-num)
+      break if possible_words.any?
     end
 
     possible_words = possible_words.sort_by { |w| w.size }
@@ -45,6 +35,25 @@ class Player
     else
       return nil
     end
+  end
+
+  def possible(num=5)
+    possible_words = []
+    brain.each do |word, sorted_word|
+      used_letters = letters.dup
+      found = 0
+      word.split('').each do |l|
+        if used_letters.include?(l)
+          found += 1
+          used_letters.delete(l)
+        end
+      end
+      if found == word.size
+        possible_words << word
+        break if word.size > num
+      end
+    end
+    return possible_words
   end
 
   def brain
