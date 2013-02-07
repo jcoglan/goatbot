@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require File.expand_path('../../lib/goat', __FILE__)
+
+trap('INT') { EM.stop }
+
+EM.run {
+  client = Goat.new(ARGV[0], ARGV[1].to_i)
+  client.username = ARGV[2]
+}
+
