@@ -9,15 +9,13 @@ class Player
     @letters ||= @board.flatten
   end
 
-  def pick
-    possible_words = []
-    5.times do |num|
-      possible_words = possible(5-num)
-      break if possible_words.any?
-    end
+  def board=(b)
+    @board = b
+    possible_words
+  end
 
-    possible_words = possible_words.sort_by { |w| w.size }
-    selected_word = possible_words.reverse.detect {|word| !@selected_words.include?(word)}
+  def pick
+    selected_word = possible_words.detect {|word| !@selected_words.include?(word)}
     if selected_word
       @selected_words << selected_word
       move = {}
@@ -37,27 +35,31 @@ class Player
     end
   end
 
-  def possible(num=5)
+  def possible_words
+    s = Time.now
+    return @possible_words if @possible_words
     possible_words = []
     brain.each do |word, sorted_word|
       used_letters = letters.dup
       found = 0
-      word.split('').each do |l|
+      word.each do |l|
         if used_letters.include?(l)
           found += 1
           used_letters.delete(l)
+        else
+          break
         end
       end
       if found == word.size
         possible_words << word
-        break if word.size > num
       end
     end
-    return possible_words
+    puts Time.now - s
+    return @possible_words = possible_words.reverse
   end
 
   def brain
-    @words ||= File.open('/usr/share/dict/words').readlines.map {|w| w.strip}.select { |w| w.size > 1 }.select {|w| w.downcase == w}
+    @words ||= File.open('/usr/share/dict/words').readlines.map {|w| w.strip}.select { |w| w.size > 1 }.select {|w| w.downcase == w}.map {|w| w.split('')}
   end
 end
 
