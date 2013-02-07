@@ -39,8 +39,8 @@ class Player
   end
 
   def possible_words(num)
-    possible_words = []
-    brain.each do |word|
+    @possible_words ||= []
+    while word = brain.shift
       used_letters = letters.dup
       found = 0
       word.each do |l|
@@ -52,11 +52,11 @@ class Player
         end
       end
       if found == word.size && !@selected_words.include?(word)
-        possible_words << word
+        @possible_words << word
         break if word.size >= num
       end
     end
-    return possible_words.sort_by {|w| w.size}.reverse
+    return @possible_words.sort_by {|w| w.size}.reverse
   end
 
   def brain
