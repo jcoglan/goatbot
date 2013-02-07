@@ -19,7 +19,7 @@ class Player
     if selected_word
       @selected_words << selected_word
       move = {}
-      selected_word.split('').each_with_index do |word_letter, word_index|
+      selected_word.each_with_index do |word_letter, word_index|
         @board.each_with_index do |row, i|
           row.each_with_index do |board_letter, j|
             if board_letter == word_letter && !move.values.include?([i,j])
@@ -28,7 +28,7 @@ class Player
           end
         end
       end
-      puts selected_word
+      puts selected_word.join('')
       return move.values
     else
       return nil
@@ -36,10 +36,9 @@ class Player
   end
 
   def possible_words
-    s = Time.now
     return @possible_words if @possible_words
     possible_words = []
-    brain.each do |word, sorted_word|
+    brain.each do |word|
       used_letters = letters.dup
       found = 0
       word.each do |l|
@@ -54,7 +53,6 @@ class Player
         possible_words << word
       end
     end
-    puts Time.now - s
     return @possible_words = possible_words.reverse
   end
 
