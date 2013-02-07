@@ -11,11 +11,14 @@ class Player
 
   def board=(b)
     @board = b
-    possible_words
   end
 
   def pick
-    selected_word = possible_words.detect {|word| !@selected_words.include?(word)}
+    selected_word = nil
+    5.times do |num|
+      selected_word = possible_words(5-num).first
+      break if selected_word
+    end
     if selected_word
       @selected_words << selected_word
       move = {}
@@ -35,8 +38,7 @@ class Player
     end
   end
 
-  def possible_words
-    return @possible_words if @possible_words
+  def possible_words(num)
     possible_words = []
     brain.each do |word|
       used_letters = letters.dup
@@ -49,11 +51,12 @@ class Player
           break
         end
       end
-      if found == word.size
+      if found == word.size && !@selected_words.include?(word)
         possible_words << word
+        break if word.size >= num
       end
     end
-    return @possible_words = possible_words.reverse
+    return possible_words.sort_by {|w| w.size}.reverse
   end
 
   def brain

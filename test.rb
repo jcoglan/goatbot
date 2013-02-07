@@ -6,4 +6,6 @@ last_move = []
 
 p = Player.new
 p.board = board
-puts p.pick.inspect
+10.times do
+   p.pick
+end
