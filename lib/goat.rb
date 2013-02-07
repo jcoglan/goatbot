@@ -16,6 +16,10 @@ class Goat
     @client.send_name(@username)
   end
 
+  def start_game
+
+  end
+
   def update_letters(letters)
     @player.board = letters
   end

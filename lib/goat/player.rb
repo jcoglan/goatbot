@@ -40,6 +40,7 @@ class Player
           end
         end
       end
+      puts selected_word
       return move.values
     else
       return nil

@@ -20,9 +20,12 @@ class Goat
       parts = line.split(';').map(&:strip)
       puts "INFO #{parts.first}" unless parts.first == ''
 
+      if parts.first =~ /new game/
+        @agent.start_game
+      end
+
       if parts[1] =~ /\?$/
         command = parts[1].split(/\s+/)
-        p command
         case command.first
         when 'name' then @agent.ask_for_name
         when 'ping' then @conn.send_data("pong\n")
@@ -44,8 +47,12 @@ class Goat
       @agent.update_ownership(owners)
       next_move = @agent.ask_for_move
 
-      move_str = next_move.map { |p| p * '' } * ','
-      callback { @conn.send_data("move:#{move_str}\n") }
+      if next_move
+        move_str = next_move.map { |p| p * '' } * ','
+        callback { @conn.send_data("move:#{move_str}\n") }
+      else
+        callback { @conn.send_data("pass\n") }
+      end
     end
 
     def connect
