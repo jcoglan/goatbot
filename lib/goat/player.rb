@@ -22,6 +22,7 @@ class Player
       end
       if found == word.size
         possible_words << word
+        break if word.size > 4
       end
     end
 
