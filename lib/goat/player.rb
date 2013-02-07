@@ -22,17 +22,14 @@ class Player
     end
 
     possible_words = possible_words.sort_by { |w| w.size }
-    selected_words = possible_words.last(50)
+    selected_word = possible_words.last
 
     move = {}
-    selected_words.each do |selected_word|
-      move = {}
-      selected_word.split('').each_with_index do |word_letter, word_index|
-        @board.each_with_index do |row, i|
-          row.each_with_index do |board_letter, j|
-            if board_letter == word_letter && !move.values.include?([i,j])
-              move[word_index] = [i, j]
-            end
+    selected_word.split('').each_with_index do |word_letter, word_index|
+      @board.each_with_index do |row, i|
+        row.each_with_index do |board_letter, j|
+          if board_letter == word_letter && !move.values.include?([i,j])
+            move[word_index] = [i, j]
           end
         end
       end
