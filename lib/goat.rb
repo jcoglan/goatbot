@@ -1,5 +1,5 @@
-require 'eventmachine'
-
+#require 'eventmachine'
+ require 'em/pure_ruby'
 class Goat
   root = File.expand_path('../goat', __FILE__)
   require root + '/net'

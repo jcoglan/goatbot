@@ -31,8 +31,13 @@ class Player
           end
         end
       end
-      puts selected_word.join('')
-      return move.values
+
+      tiles = move.sort_by {|k,_|k}.map {|l| l.last}
+      #tiles.each do |r,l|
+      #  p @board[r][l]
+      #end
+      #puts ''
+      return tiles
     else
       return nil
     end
