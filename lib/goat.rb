@@ -17,7 +17,7 @@ class Goat
   end
 
   def start_game
-
+    @player = Player.new
   end
 
   def update_letters(letters)
