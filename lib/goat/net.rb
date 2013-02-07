@@ -22,6 +22,7 @@ class Goat
 
       if parts[1] =~ /\?$/
         command = parts[1].split(/\s+/)
+        p command
         case command.first
         when 'name' then @agent.ask_for_name
         when 'ping' then @conn.send_data("pong\n")

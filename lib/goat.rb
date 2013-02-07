@@ -15,15 +15,16 @@ class Goat
   end
 
   def update_letters(letters)
-    # TODO
+    @board = letters
   end
 
   def update_ownership(owners)
-    # TODO
+    @state_of_board = owners
   end
 
   def ask_for_move
-    [[1,2],[3,4]]
+    player = Player.new(@board, nil)
+    player.pick(@state_of_board)
   end
 end
 
