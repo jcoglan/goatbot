@@ -9,6 +9,7 @@ class Goat
 
   def initialize(host, port)
     @client = Net.new(self, host, port)
+    @player = Player.new
   end
 
   def ask_for_name
@@ -16,16 +17,15 @@ class Goat
   end
 
   def update_letters(letters)
-    @board = letters
+    @player.board = letters
   end
 
   def update_ownership(owners)
-    @state_of_board = owners
+    @player.state = owners
   end
 
   def ask_for_move
-    player = Player.new(@board, nil)
-    player.pick(@state_of_board)
+    @player.pick
   end
 end
 

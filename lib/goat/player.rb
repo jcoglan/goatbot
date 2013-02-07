@@ -1,15 +1,18 @@
 class Player
-  def initialize(board, my_number)
-    @board = board
-    @letters = @board.flatten
-    @my_number = my_number
+  attr_writer :state, :board, :my_number
+
+  def initialize
     @selected_words = []
   end
 
-  def pick(board_state)
+  def letters
+    @letters ||= @board.flatten
+  end
+
+  def pick
     possible_words = []
     brain.each do |word, sorted_word|
-      used_letters = @letters.dup
+      used_letters = letters.dup
       found = 0
       word.split('').each do |l|
         if used_letters.include?(l)
@@ -23,7 +26,7 @@ class Player
     end
 
     possible_words = possible_words.sort_by { |w| w.size }
-    selected_word = possible_words.reverse.select {|word| !@selected_words.include?(word)}
+    selected_word = possible_words.reverse.detect {|word| !@selected_words.include?(word)}
     if selected_word
       @selected_words << selected_word
       move = {}
@@ -46,11 +49,4 @@ class Player
     @words ||= File.open('/usr/share/dict/words').readlines.map {|w| w.strip}.select { |w| w.size > 1 }.select {|w| w.downcase == w}
   end
 end
-#
-#board = ['nnaou'.split(''), 'mkhuu'.split(''), 'ifnfg'.split(''), 'baurn'.split(''), 'cruil'.split('')]
-#board_state = [[nil,nil,nil,nil,nil], [nil,nil,nil,nil,nil], [nil,nil,nil,nil,nil], [nil,nil,nil,nil,nil], [nil,nil,nil,nil,nil]]
-#last_move = []
-#
-#p = Player.new(board, 1)
-#puts p.pick(board_state).inspect
 
