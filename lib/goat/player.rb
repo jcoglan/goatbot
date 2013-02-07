@@ -3,6 +3,7 @@ class Player
     @board = board
     @letters = @board.flatten
     @my_number = my_number
+    @selected_words = []
   end
 
   def pick(board_state)
@@ -22,24 +23,27 @@ class Player
     end
 
     possible_words = possible_words.sort_by { |w| w.size }
-    selected_word = possible_words.last
-
-    move = {}
-    selected_word.split('').each_with_index do |word_letter, word_index|
-      @board.each_with_index do |row, i|
-        row.each_with_index do |board_letter, j|
-          if board_letter == word_letter && !move.values.include?([i,j])
-            move[word_index] = [i, j]
+    selected_word = possible_words.reverse.select {|word| !@selected_words.include?(word)}
+    if selected_word
+      @selected_words << selected_word
+      move = {}
+      selected_word.split('').each_with_index do |word_letter, word_index|
+        @board.each_with_index do |row, i|
+          row.each_with_index do |board_letter, j|
+            if board_letter == word_letter && !move.values.include?([i,j])
+              move[word_index] = [i, j]
+            end
           end
         end
       end
+      return move.values
+    else
+      return nil
     end
-
-    move.values
   end
 
   def brain
-    @words ||= File.open('/usr/share/dict/words').readlines.map {|w| w.strip}.select { |w| w.size > 1 }
+    @words ||= File.open('/usr/share/dict/words').readlines.map {|w| w.strip}.select { |w| w.size > 1 }.select {|w| w.downcase == w}
   end
 end
 #
