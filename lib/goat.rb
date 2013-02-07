@@ -3,6 +3,7 @@ require 'eventmachine'
 class Goat
   root = File.expand_path('../goat', __FILE__)
   require root + '/net'
+  require root + '/player'
 
   attr_accessor :username
 
