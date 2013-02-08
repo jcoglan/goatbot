@@ -14,9 +14,10 @@ class Player
   end
 
   def pick
+    s = Time.now
     selected_word = nil
-    5.times do |num|
-      selected_word = possible_words(5-num).first
+    3.times do |num|
+      selected_word = possible_words(3-num).first
       break if selected_word
     end
     if selected_word
@@ -32,11 +33,13 @@ class Player
         end
       end
 
+      puts selected_word.join('')
       tiles = move.sort_by {|k,_|k}.map {|l| l.last}
       #tiles.each do |r,l|
       #  p @board[r][l]
       #end
       #puts ''
+      puts Time.now - s
       return tiles
     else
       return nil
